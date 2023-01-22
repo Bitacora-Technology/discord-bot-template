@@ -92,3 +92,7 @@ class Owner(commands.Cog):
         )
         log.info(f'Successfully synced {len(commands_sync)} commands')
         await ctx.message.delete(delay=self.delay)
+
+
+async def setup(bot: Bot) -> None:
+    await bot.add_cog(Owner(bot))
