@@ -22,6 +22,28 @@ class Owner(commands.Cog):
         await ctx.send(content, delete_after=self.delay)
         await ctx.message.delete(delay=self.delay)
 
+    @commands.command(name='update', hidden=True)
+    async def update(self, ctx: commands.Context) -> None:
+        """Reload all extensions"""
+        cog_list = [c for c in self.bot.cogs]
+        for cog in cog_list:
+            extension = cog.lower()
+            try:
+                await self.bot.reload_extension(f'cogs.{extension}')
+            except Exception as e:
+                await ctx.send(
+                    f'{e.__class__.__name__}: {e}',
+                    delete_after=self.delay
+                )
+                log.exception(f'Failed to reload extension {extension}')
+            else:
+                await ctx.send(
+                    f'Extension \'{extension}\' reloaded.',
+                    delete_after=self.delay
+                )
+                log.info(f'Successfully reloaded extension {extension}')
+        await ctx.message.delete(delay=self.delay)
+
     @commands.command(name='load', hidden=True)
     async def load(self, ctx: commands.Context, extension: str) -> None:
         """Loads a extension"""
