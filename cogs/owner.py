@@ -14,6 +14,14 @@ class Owner(commands.Cog):
     async def cog_check(self, ctx: commands.Context) -> bool:
         return await self.bot.is_owner(ctx.author)
 
+    @commands.command(name='cogs', hidden=True)
+    async def cogs(self, ctx: commands.Context) -> None:
+        """Get the cog list"""
+        cog_list = self.bot.cogs
+        content = '\n'.join(cog_list)
+        await ctx.send(content, delete_after=self.delay)
+        await ctx.message.delete(delay=self.delay)
+
     @commands.command(name='load', hidden=True)
     async def load(self, ctx: commands.Context, extension: str) -> None:
         """Loads a extension"""
